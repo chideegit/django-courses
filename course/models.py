@@ -12,11 +12,12 @@ class Category(models.Model):
 class Course(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    video_link = models.URLField()
-    article_link = models.URLField()
+    video_link = models.URLField(null=True)
+    article_link = models.URLField(null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class EnrolCourse(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_completed = models.BooleanField(default=False)
+    is_enrolled = models.BooleanField(default=False)

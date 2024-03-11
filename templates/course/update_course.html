@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<form class="p-4 p-md-5 border rounded-3 bg-light" method="POST">
+    {% csrf_token %}
+    <div class="form-floating mb-3">
+        {% render_field form.title class="form-control" %}
+        <label for="floatingInput">Title</label>
+    </div>
+    <div class="form-floating mb-3">
+        {% render_field form.description class="form-control" %}
+        <label for="floatingInput">Description</label>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                {% render_field form.video_link class="form-control" %}
+                <label for="floatingInput">Video Link (optional)</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                {% render_field form.article_link class="form-control" %}
+                <label for="floatingInput">Article Link (optional)</label>
+            </div>
+        </div>
+
+    </div>
+  
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+</form>
+
+{% endblock content %}

@@ -40,7 +40,7 @@ def update_course(request, pk):
 def all_courses(request):
     courses = Course.objects.all()
     context = {'courses':courses}
-    return render(request, 'course/all-courses.html', context)
+    return render(request, 'course/all_courses.html', context)
 
 def delete_course(request, pk):
     course = Course.objects.get(pk=pk)
@@ -50,12 +50,17 @@ def delete_course(request, pk):
 
 def enrol_course(request, pk):
     course = Course.objects.get(pk=pk)
-    EnrolCourse.objects.create(
-        user = request.user, 
-        course = course
-    )
-    messages.success(request, 'You have successfully enrolled for this course')
-    return redirect('dashboard')
+    if not EnrolCourse.objects.filter(course=course, user=request.user).exists():
+        EnrolCourse.objects.create(
+            user = request.user, 
+            course = course, 
+            is_enrolled = True
+        )
+        messages.success(request, 'You have successfully enrolled for this course')
+        return redirect('dashboard')
+    else:
+        messages.warning(request, 'You are already enrolled for this course')
+        return redirect('dashboard')
 
 def all_enrolled_courses(request):
     courses = EnrolCourse.objects.filter(user=request.user)
