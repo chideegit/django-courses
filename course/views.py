@@ -120,7 +120,7 @@ def all_saved_courses(request):
 @only_learner
 def remove_from_saved(request, pk):
     course = Course.objects.get(pk=pk)
-    saved_course = SaveCourse.objects.get(course=course)
+    saved_course = SaveCourse.objects.get(course=course, user=request.user)
     saved_course.delete()
     messages.success(request, 'Course removed from Saved')
     return redirect('all-saved-courses')

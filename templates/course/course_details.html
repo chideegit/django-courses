@@ -16,18 +16,20 @@
             </div>
         </div>        
     </div>
-
+    
     <div class ="col-md-4">
         <div class="p-4 h-100 mb-4 bg-light rounded-3">
             <div class="container-fluid py-5">
                 <h1 class="display-7 fw-bold">Description</h1>
                 <p class="col-md-12">{{course.description}}</p>
-                {% if not check_enrol and not check_save %}
+                {% if check_enrol and check_save %}
+                <a href="{% url 'remove-from-saved' course.pk %}" class="btn btn-warning btn-lg" type="button">Remove from Saved</a>
+                {% elif not check_enrol and not check_save %}
                 <a href="{% url 'save-course' course.pk %}" class="btn btn-primary btn-lg" type="button">Save Course</a>
-                {% elif check_enrol and check_save %}
+                {% elif not check_enrol and check_save %}
                 <a href="{% url 'remove-from-saved' course.pk %}" class="btn btn-warning btn-lg" type="button">Remove from Saved</a>
-                {% else %}
-                <a href="{% url 'remove-from-saved' course.pk %}" class="btn btn-warning btn-lg" type="button">Remove from Saved</a>
+                {% elif check_enrol and not check_save %}
+                <!-- Do nothing -->
                 {% endif %}
             </div>
         </div>        
