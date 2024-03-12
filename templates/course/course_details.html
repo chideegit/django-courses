@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+    <div class ="col-md-8">
+        <div class="p-4 h-100 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-7 fw-bold">{{course.title}}</h1>
+                <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one
+                    in previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it
+                    to your liking.</p>
+                {% if check %}
+                <a href="#" class="btn btn-primary btn-lg" type="button">Start Learning</a>
+                {% else %}
+                <a href="{% url 'enrol-course' course.pk %}" class="btn btn-primary btn-lg" type="button">Enrol Course</a>
+                {% endif %}
+            </div>
+        </div>        
+    </div>
+
+    <div class ="col-md-4">
+        <div class="p-4 h-100 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-7 fw-bold">Description</h1>
+                <p class="col-md-12">{{course.description}}</p>
+                <a href="{% url 'save-course' course.pk %}" class="btn btn-primary btn-lg" type="button">Save Course</a>
+            </div>
+        </div>        
+    </div>
+</div>
+
+{% if check %}
+<div class="ratio ratio-16x9 mb-5">
+    <iframe src="{{course.video_link}}" title="{{course.title}}" allowfullscreen></iframe>
+</div>
+{% else %}
+<div class="alert alert-warning" role="alert">
+    No Content. Enrol now to see available contents
+</div>
+{% endif %}
+
+{% endblock content %}

@@ -21,3 +21,8 @@ class EnrolCourse(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_completed = models.BooleanField(default=False)
     is_enrolled = models.BooleanField(default=False)
+
+class SaveCourse(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    

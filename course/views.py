@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from .models import Course
 from .form import * 
+from django.urls import reverse
 
 def add_course(request):
     if request.method == 'POST':
@@ -37,6 +38,15 @@ def update_course(request, pk):
         context = {'form':form}
     return render(request, 'course/update_course.html', context)
 
+def course_details(request, pk):
+    course = Course.objects.get(pk=pk)
+    if course.enrolcourse_set.filter(course=course, user=request.user).exists():
+        check = True
+    else:
+        check = False
+    context = {'course':course, 'check':check}
+    return render(request, 'course/course_details.html', context)
+
 def all_courses(request):
     courses = Course.objects.all()
     context = {'courses':courses}
@@ -57,14 +67,25 @@ def enrol_course(request, pk):
             is_enrolled = True
         )
         messages.success(request, 'You have successfully enrolled for this course')
-        return redirect('dashboard')
+        return HttpResponseRedirect(reverse('course-details', args=[course.pk]))
     else:
         messages.warning(request, 'You are already enrolled for this course')
+        
         return redirect('dashboard')
 
 def all_enrolled_courses(request):
     courses = EnrolCourse.objects.filter(user=request.user)
     context = {'courses':courses}
     return render(request, 'course/all_enrolled_courses.html', context)
+
+def save_course(request, pk):
+    course = Course.objects.get(pk=pk)
+    if not SaveCourse.objects.filter(course=course, user=request.user).exists():
+        SaveCourse.objects.create(course=course, user=request.user)
+        messages.success(request, 'Course has been saved to your profile')
+        return redirect('dashboard')
+    else:
+        messages.warning(request, 'Course has already been saved')
+        return redirect('dashboard')
 
 
