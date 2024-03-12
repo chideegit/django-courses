@@ -9,6 +9,7 @@ def register_user(request):
         if form.is_valid():
             var = form.save(commit=False)
             var.username = var.email
+            var.is_learner = True
             var.save()
             messages.success(request, 'Account created. Please log in to continue')
             return redirect('login')

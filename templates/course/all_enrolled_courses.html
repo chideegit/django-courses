@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">All Enrolled Courses</h1>
+        <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one
+            in previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it
+            to your liking.</p>
+        <button class="btn btn-primary btn-lg" type="button">Example button</button>
+    </div>
+</div>
+
+
+{% if courses %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for course in courses %}
+    <div class="col">
+        <div class="card h-100">
+            <!-- <img src="..." class="card-img-top" alt="..."> -->
+            <div class="card-body">
+                <h5 class="card-title">{{course.course.title}}</h5>
+                <p class="card-text">{{course.course.description}}</p>
+                <a href="{% url 'course-details' course.course.pk %}" class="btn btn-primary btn-sm w-100">View Course Details</a>
+            </div>
+            <div class="card-footer text-center">
+                <small class="text-muted"></small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-warning" role="alert">
+    No Content. Enrol now to see available contents
+</div>
+{% endif %}
+
+{% endblock content %}
