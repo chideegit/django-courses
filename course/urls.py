@@ -11,5 +11,7 @@ urlpatterns = [
     path('all-enrolled-courses/', all_enrolled_courses, name='all-enrolled-courses'), 
     path('save-course/<int:pk>/', save_course, name='save-course'),
     path('all-saved-courses/', all_saved_courses, name='all-saved-courses'), 
-    path('remove-from-saved/<int:pk>/', remove_from_saved, name='remove-from-saved')
+    path('remove-from-saved/<int:pk>/', remove_from_saved, name='remove-from-saved'), 
+    path('mark-as-complete/<int:pk>/', mark_as_complete, name='mark-as-complete'), 
+    path('completed-courses/', completed_courses, name='completed-courses')
 ]

@@ -56,7 +56,12 @@ def course_details(request, pk):
         check_save = True
     else:
         check_save = False
-    context = {'course':course, 'check_enrol':check_enrol, 'check_save':check_save}
+    
+    if course.enrolcourse_set.filter(course=course, user=request.user, is_completed=True).exists():
+        is_complete = True
+    else:
+        is_complete = False
+    context = {'course':course, 'check_enrol':check_enrol, 'check_save':check_save, 'is_complete':is_complete}
     return render(request, 'course/course_details.html', context)
 
 @login_required
@@ -93,7 +98,7 @@ def enrol_course(request, pk):
 @login_required
 @only_learner
 def all_enrolled_courses(request):
-    courses = EnrolCourse.objects.filter(user=request.user)
+    courses = EnrolCourse.objects.filter(user=request.user, is_completed=False)
     context = {'courses':courses}
     return render(request, 'course/all_enrolled_courses.html', context)
 
@@ -125,3 +130,17 @@ def remove_from_saved(request, pk):
     messages.success(request, 'Course removed from Saved')
     return redirect('all-saved-courses')
 
+@login_required
+@only_learner
+def mark_as_complete(request, pk):
+    course = Course.objects.get(pk=pk)
+    get_enrolled_course = EnrolCourse.objects.get(course=course, user=request.user)
+    get_enrolled_course.is_completed = True
+    get_enrolled_course.save()
+    messages.success(request, 'Course is now marked as complete')
+    return redirect('dashboard')
+
+def completed_courses(request):
+    courses = EnrolCourse.objects.filter(user=request.user, is_completed=True)
+    context = {'courses':courses}
+    return render(request, 'course/completed_courses.html', context)
